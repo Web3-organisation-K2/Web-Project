@@ -1,11 +1,11 @@
 'use client';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import AppLayout from '@/components/AppLayout';
 import MobileNav from '@/components/MobileNav';
 import { NOTIFICATIONS } from '@/lib/mock-data';
 import type { Notification } from '@/lib/mock-data';
 import { Bell, CheckCheck, Zap, Info, CheckCircle, AlertTriangle, Trash2 } from 'lucide-react';
-import Icon from '@/components/ui/AppIcon';
+
 
 
 const TYPE_CONFIG = {

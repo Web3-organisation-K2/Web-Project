@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import  { useState } from 'react';
 import Link from 'next/link';
 import SessionStatusBadge from '@/components/ui/SessionStatusBadge';
 import { Clock, MapPin, Users, Star, Share2, ChevronLeft } from 'lucide-react';

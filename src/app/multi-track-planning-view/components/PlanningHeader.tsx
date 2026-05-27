@@ -1,6 +1,5 @@
-import React from 'react';
-import Link from 'next/link';
 
+import Link from 'next/link';
 import { CalendarDays, ChevronLeft, ChevronRight, ExternalLink } from 'lucide-react';
 
 interface PlanningHeaderProps {

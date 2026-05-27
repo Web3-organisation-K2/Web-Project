@@ -4,7 +4,7 @@ import AppLayout from '@/components/AppLayout';
 import MobileNav from '@/components/MobileNav';
 import Link from 'next/link';
 import { Settings, User, Bell, Shield, Palette, ChevronRight, Save, ArrowLeft } from 'lucide-react';
-import Icon from '@/components/ui/AppIcon';
+
 
 
 interface SettingToggle {

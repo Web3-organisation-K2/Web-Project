@@ -1,12 +1,12 @@
 'use client';
-import React, { useState, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import AppLayout from '@/components/AppLayout';
 import MobileNav from '@/components/MobileNav';
 import PlanningGrid from './components/PlanningGrid';
 import PlanningHeader from './components/PlanningHeader';
 import { SESSIONS, SPEAKERS, ROOMS, UPCOMING_EVENTS, getSessionStatus, MOCK_NOW, formatShortDate } from '@/lib/mock-data';
-import { Calendar, MapPin, ChevronDown, Users, ArrowRight } from 'lucide-react';
+import { Calendar, MapPin, ChevronDown, Users} from 'lucide-react';
 
 const DAY2_SESSIONS: Session[] = [
   {
@@ -25,6 +25,7 @@ const DAY2_SESSIONS: Session[] = [
   },
   {
     id: 'sess-d2-02',
+    eventId: 'evt-002',
     title: 'Workshop: Building AI-Powered Developer Tools',
     description: 'A hands-on workshop where Amara Diallo guides participants through building AI-powered tools using LLMs. Topics include prompt engineering, function calling, and deploying AI assistants for developer workflows.',
     startTime: '2026-04-27T10:30:00',
@@ -38,6 +39,7 @@ const DAY2_SESSIONS: Session[] = [
   },
   {
     id: 'sess-d2-03',
+    eventId: 'evt-003',
     title: 'Scaling Design Systems Across Organizations',
     description: 'Thomas Ruelle shares lessons from Figma\'s journey scaling their design system across 300+ designers and engineers. Learn about governance models, contribution workflows, and maintaining consistency at scale.',
     startTime: '2026-04-27T11:00:00',
@@ -51,6 +53,7 @@ const DAY2_SESSIONS: Session[] = [
   },
   {
     id: 'sess-d2-04',
+    eventId: 'evt-004',
     title: 'The State of WebAssembly in 2026',
     description: 'Nadia Kowalski presents the latest developments in the WebAssembly ecosystem — the Component Model, WASI preview 2, and real-world production deployments pushing the boundaries of what runs on the web and at the edge.',
     startTime: '2026-04-27T13:00:00',
@@ -64,6 +67,7 @@ const DAY2_SESSIONS: Session[] = [
   },
   {
     id: 'sess-d2-05',
+    eventId: 'evt-005',
     title: 'Closing Ceremony & Awards',
     description: 'Join us for the grand finale of DevConf Paris 2026! Community awards, best talk recognitions, and a look ahead at what\'s coming next. Celebrate two incredible days of learning and connection.',
     startTime: '2026-04-27T16:00:00',

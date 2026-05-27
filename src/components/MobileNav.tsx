@@ -1,9 +1,8 @@
 'use client';
-import React from 'react';
 import Link from 'next/link';
 import { LogIn } from 'lucide-react';
 import { Home, CalendarDays, LayoutGrid, Heart, User } from 'lucide-react';
-import Icon from '@/components/ui/AppIcon';
+
 
 
 const MOBILE_TABS = [

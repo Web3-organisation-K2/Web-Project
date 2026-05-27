@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+
 import { useSearchParams } from 'next/navigation';
 import AppLayout from '@/components/AppLayout';
 import MobileNav from '@/components/MobileNav';

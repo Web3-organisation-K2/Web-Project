@@ -1,4 +1,4 @@
-import React from 'react';
+
 import AppImage from '@/components/ui/AppImage';
 import { Globe } from 'lucide-react';
 import type { Speaker } from '@/lib/mock-data';

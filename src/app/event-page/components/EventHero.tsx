@@ -1,4 +1,4 @@
-import React from 'react';
+
 import Link from 'next/link';
 import AppImage from '@/components/ui/AppImage';
 import { MapPin, CalendarDays, LayoutGrid, ArrowRight } from 'lucide-react';

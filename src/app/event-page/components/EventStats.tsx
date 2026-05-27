@@ -1,7 +1,5 @@
-import React from 'react';
-import { Presentation, Radio, Users, DoorOpen } from 'lucide-react';
-import Icon from '@/components/ui/AppIcon';
 
+import { Presentation, Radio, Users, DoorOpen } from 'lucide-react';
 
 interface EventStatsProps {
   totalSessions: number;

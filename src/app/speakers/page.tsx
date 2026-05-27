@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import AppLayout from '@/components/AppLayout';
 import MobileNav from '@/components/MobileNav';
 import { SPEAKERS } from '@/lib/mock-data';

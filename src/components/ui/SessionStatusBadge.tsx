@@ -1,4 +1,4 @@
-import React from 'react';
+
 import type { SessionStatus } from '@/lib/mock-data';
 import LiveBadge from './LiveBadge';
 

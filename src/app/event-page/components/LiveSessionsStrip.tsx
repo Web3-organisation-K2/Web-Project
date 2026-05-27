@@ -1,4 +1,4 @@
-import React from 'react';
+
 import Link from 'next/link';
 import SpeakerAvatar from '@/components/ui/SpeakerAvatar';
 import { Clock, MapPin, ArrowRight } from 'lucide-react';

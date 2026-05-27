@@ -1,4 +1,4 @@
-import React from 'react';
+
 import AppLayout from '@/components/AppLayout';
 import MobileNav from '@/components/MobileNav';
 import EventHero from './components/EventHero';

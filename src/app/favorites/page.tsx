@@ -1,5 +1,5 @@
 'use client';
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import AppLayout from '@/components/AppLayout';
 import MobileNav from '@/components/MobileNav';
 import { UPCOMING_EVENTS } from '@/lib/mock-data';
