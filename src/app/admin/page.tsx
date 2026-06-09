@@ -81,3 +81,54 @@ const RECENT_ACTIVITY = [
   { text: "Speaker Amara Diallo confirmed attendance", time: "25m ago", type: "speaker" },
   { text: "Room Beta at 95% capacity", time: "31m ago", type: "warning" },
 ];
+
+const card = {
+  background: "#161616", border: "1px solid rgba(255,255,255,0.07)",
+  borderRadius: 16, boxShadow: "0 4px 24px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.04)",
+};
+const inputCls = {
+  width: "100%", boxSizing: "border-box",
+  background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)",
+  borderRadius: 12, padding: "11px 16px", color: "#fff", fontSize: 13,
+  outline: "none", fontFamily: "'DM Sans', sans-serif",
+};
+
+const CustomTooltip = ({ active, payload, label }) => {
+  if (!active || !payload?.length) return null;
+  return (
+    <div style={{ background: "#1C1C1C", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 10, padding: "8px 12px", fontSize: 11 }}>
+      <p style={{ color: "#888", marginBottom: 4 }}>{label}</p>
+      {payload.map((p, i) => (
+        <p key={i} style={{ color: p.color || "#A8FF3E", fontWeight: 700 }}>{p.value} {p.name}</p>
+      ))}
+    </div>
+  );
+};
+
+function StatusBadge({ status }) {
+  if (status === "live") return (
+    <span style={{ display: "inline-flex", alignItems: "center", gap: 5, padding: "3px 10px", borderRadius: 999, fontSize: 10, fontWeight: 800, letterSpacing: "0.05em", background: "rgba(168,255,62,0.1)", color: "#A8FF3E", border: "1px solid rgba(168,255,62,0.25)" }}>
+      <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#A8FF3E", animation: "pulse 2s infinite" }} />
+      LIVE
+    </span>
+  );
+  if (status === "ended") return (
+    <span style={{ display: "inline-flex", alignItems: "center", padding: "3px 10px", borderRadius: 999, fontSize: 10, fontWeight: 800, letterSpacing: "0.05em", background: "rgba(255,255,255,0.04)", color: "#555", border: "1px solid rgba(255,255,255,0.06)" }}>
+      ENDED
+    </span>
+  );
+  return (
+    <span style={{ display: "inline-flex", alignItems: "center", padding: "3px 10px", borderRadius: 999, fontSize: 10, fontWeight: 800, letterSpacing: "0.05em", background: "rgba(255,107,43,0.1)", color: "#FF6B2B", border: "1px solid rgba(255,107,43,0.2)" }}>
+      UPCOMING
+    </span>
+  );
+}
+
+function getStatus(session) {
+  const now = new Date("2026-04-26T10:45:00");
+  const start = new Date(session.startTime);
+  const end = new Date(session.endTime);
+  if (now >= start && now <= end) return "live";
+  if (now > end) return "ended";
+  return "upcoming";
+}
