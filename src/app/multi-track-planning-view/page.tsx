@@ -229,7 +229,7 @@ export default function MultiTrackPlanningPage() {
                     {event.attendees && (
                       <div className="flex items-center gap-1.5 text-xs text-slate-500">
                         <Users size={11} />
-                        <span>{event.attendees.toLocaleString()} attendees</span>
+                        <span>{event.attendees.toLocaleString('en-US')} attendees</span>
                       </div>
                     )}
                   </div>

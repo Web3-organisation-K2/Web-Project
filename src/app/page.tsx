@@ -267,7 +267,7 @@ export default function HomePage() {
                       <span>{EVENT?.city}</span>
                       <span className="text-[#333]">·</span>
                       <Users size={11} />
-                      <span>{EVENT?.attendees?.toLocaleString()} attendees</span>
+                      <span>{EVENT?.attendees?.toLocaleString('en-US')} attendees</span>
                     </div>
                     <div className="flex flex-wrap gap-1.5">
                       {EVENT?.tags?.map((tag) => (
