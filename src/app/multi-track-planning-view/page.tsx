@@ -132,7 +132,6 @@ export default function MultiTrackPlanningPage() {
 
   const liveCount = sessionsWithStatus.filter((s) => s.status === 'live').length;
 
-  // Future events: UPCOMING_EVENTS excluding evt-001 (current event)
   const futureEvents = useMemo(
     () => UPCOMING_EVENTS.filter((e) => e.id !== 'evt-001'),
     []

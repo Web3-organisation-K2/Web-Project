@@ -10,7 +10,6 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const { email, password } = body;
 
-    // Validation
     if (!email || !password) {
       return NextResponse.json(
         { message: 'Email et mot de passe requis' },
@@ -18,7 +17,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Trouver l'utilisateur
     const user = await db.user.findUnique({
       where: { email },
     });
@@ -30,7 +28,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Vérifier le mot de passe
     const isPasswordValid = await bcrypt.compare(password, user.password);
 
     if (!isPasswordValid) {
@@ -40,28 +37,24 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Créer le token JWT
     const token = jwt.sign(
       { userId: user.id, email: user.email },
       JWT_SECRET,
       { expiresIn: '7d' }
     );
 
-    // Ne pas renvoyer le mot de passe
     const { password: _, ...userWithoutPassword } = user;
 
-    // Créer la réponse avec le cookie
     const response = NextResponse.json(
       { message: 'Connexion réussie', user: userWithoutPassword },
       { status: 200 }
     );
 
-    // Définir le cookie de session
     response.cookies.set('token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
-      maxAge: 7 * 24 * 60 * 60, // 7 jours
+      maxAge: 7 * 24 * 60 * 60, 
     });
 
     return response;

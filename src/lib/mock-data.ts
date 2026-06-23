@@ -203,7 +203,6 @@ export const SPEAKERS: Speaker[] = [
 }];
 
 
-// Current time for mock: 2026-04-26 10:45 (mid-morning, some sessions live)
 export const MOCK_NOW = new Date('2026-04-26T10:45:00');
 
 export const SESSIONS: Session[] = [
@@ -407,7 +406,6 @@ export const EVENT: Event = {
   tags: ['Web Dev', 'AI', 'Design', 'DevOps']
 };
 
-// Upcoming events for home page and favorites
 export const UPCOMING_EVENTS: Event[] = [
 {
   id: 'evt-001',

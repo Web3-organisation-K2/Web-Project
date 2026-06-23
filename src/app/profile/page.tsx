@@ -35,7 +35,6 @@ export default function ProfilePage() {
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<'profile' | 'account' | 'preferences'>('profile');
 
-  // Charger l'utilisateur depuis le localStorage
   useEffect(() => {
     const userData = localStorage.getItem('user');
 
@@ -60,7 +59,6 @@ export default function ProfilePage() {
     setSaved(false);
   };
 
-  // Gérer le changement de photo de profil
   const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {

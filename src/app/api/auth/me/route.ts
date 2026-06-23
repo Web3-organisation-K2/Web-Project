@@ -6,7 +6,6 @@ const JWT_SECRET = process.env.JWT_SECRET || 'votre-secret-temporaire';
 
 export async function GET(request: NextRequest) {
   try {
-    // Récupérer le token depuis le cookie
     const token = request.cookies.get('token')?.value;
 
     if (!token) {
@@ -16,10 +15,8 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // Vérifier le token
     const decoded = jwt.verify(token, JWT_SECRET) as { userId: string };
 
-    // Récupérer l'utilisateur
     const user = await db.user.findUnique({
       where: { id: decoded.userId },
       select: {

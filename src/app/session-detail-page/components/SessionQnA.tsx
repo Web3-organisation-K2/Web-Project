@@ -56,7 +56,6 @@ export default function SessionQnA({ session, status }: SessionQnAProps) {
 
   const onSubmit = async (data: QuestionFormValues) => {
     setIsSubmitting(true);
-    // Backend integration point: POST /api/sessions/{session.id}/questions
     await new Promise((r) => setTimeout(r, 800));
 
     const newQuestion: QuestionWithVote = {
@@ -124,7 +123,6 @@ export default function SessionQnA({ session, status }: SessionQnAProps) {
     );
   }
 
-  // Live state
   return (
     <div className="glass-card-live p-6">
       {/* Header */}

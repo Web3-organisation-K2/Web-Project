@@ -18,7 +18,6 @@ export default function FavoritesPage() {
       const stored = localStorage.getItem(STORAGE_KEY);
       if (stored) setFavoriteIds(JSON.parse(stored));
       else {
-        // Seed with a couple of defaults
         const defaults = ['evt-001', 'evt-002', 'evt-005'];
         setFavoriteIds(defaults);
         localStorage.setItem(STORAGE_KEY, JSON.stringify(defaults));

@@ -51,7 +51,6 @@ export default function PlanningGrid({ sessions, rooms, now, dayLabel }: Plannin
   const nowPct = ((nowMinutes - GRID_START) / GRID_TOTAL) * 100;
   const showNowLine = nowMinutes >= GRID_START && nowMinutes <= GRID_END;
 
-  // Smooth scroll to current time on mount
   useEffect(() => {
     if (showNowLine && gridContainerRef.current) {
       const container = gridContainerRef.current;
