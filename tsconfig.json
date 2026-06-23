@@ -34,7 +34,11 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    ".next/dev/types/**/*.ts"
+    ".next/dev/types/**/*.ts",
+    "/tmp/eventsync-next/types/**/*.ts",
+    "/tmp/eventsync-next/dev/types/**/*.ts",
+    "/tmp/web-project-next/types/**/*.ts",
+    "/tmp/web-project-next/dev/types/**/*.ts"
   ],
   "exclude": [
     "node_modules"
