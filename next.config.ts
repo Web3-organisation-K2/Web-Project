@@ -2,6 +2,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   output: "standalone",
+  distDir: '/tmp/web-project-next', 
   typescript: {
     ignoreBuildErrors: true,
   },
