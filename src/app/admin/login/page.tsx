@@ -5,16 +5,14 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Eye, EyeOff, Mail, Lock, ShieldCheck, ArrowRight } from 'lucide-react';
 import AppLogo from '@/components/ui/AppLogo';
+import { authProvider } from '@/lib/ra-providers';
 
 export default function AdminLoginPage() {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
-  const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-  });
+  const [formData, setFormData] = useState({ email: '', password: '' });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -28,24 +26,11 @@ export default function AdminLoginPage() {
     }
 
     try {
-      const response = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        setError(data.message || 'Connexion admin impossible.');
-        setIsLoading(false);
-        return;
-      }
-
-      localStorage.setItem('user', JSON.stringify(data.user));
+      await authProvider.login({ username: formData.email, password: formData.password });
       router.push('/admin');
-    } catch {
-      setError('Erreur réseau. Veuillez réessayer.');
+    } catch (err: any) {
+      setError(err?.message || 'Connexion admin impossible.');
+    } finally {
       setIsLoading(false);
     }
   };
