@@ -48,7 +48,11 @@ export default function ProfilePage() {
       ...DEFAULT_PROFILE,
       name: user.name || '',
       email: user.email || '',
-      username: user.email?.split('@')[0] || '',
+      username: user.username || user.email?.split('@')[0] || '',
+      bio: user.bio || '',
+      company: user.company || '',
+      title: user.title || '',
+      role: user.role || 'Participant',
       avatar: user.avatar || `https://i.pravatar.cc/150?u=${user.email}` || '',
     });
     setLoading(false);
@@ -72,20 +76,37 @@ export default function ProfilePage() {
     }
   };
 
-  const handleSave = () => {
-    const userData = localStorage.getItem('user');
-    if (userData) {
-      const user = JSON.parse(userData);
-      const updatedUser = {
-        ...user,
-        name: profile.name,
-        email: profile.email,
-        avatar: profile.avatar,
-      };
-      localStorage.setItem('user', JSON.stringify(updatedUser));
+  const handleSave = async () => {
+    try {
+      const response = await fetch('/api/auth/me', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: profile.name,
+          username: profile.username,
+          bio: profile.bio,
+          company: profile.company,
+          title: profile.title,
+          role: profile.role,
+          avatar: profile.avatar,
+        }),
+      });
+
+      if (response.ok) {
+        const { user: updatedUser } = await response.json();
+        const userData = localStorage.getItem('user');
+        if (userData) {
+          const user = JSON.parse(userData);
+          localStorage.setItem('user', JSON.stringify({ ...user, ...updatedUser }));
+        }
+        setSaved(true);
+        setTimeout(() => setSaved(false), 3000);
+      } else {
+        console.error('Erreur lors de la sauvegarde du profil');
+      }
+    } catch (error) {
+      console.error('Erreur réseau lors de la sauvegarde', error);
     }
-    setSaved(true);
-    setTimeout(() => setSaved(false), 3000);
   };
   const handleLogout = () => {
   localStorage.removeItem('user');

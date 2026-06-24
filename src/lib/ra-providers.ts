@@ -54,7 +54,6 @@ export const authProvider: AuthProvider = {
   getPermissions: async () => Promise.resolve(undefined),
 };
 
-// Simple in-memory storage for our mock data
 let mockData = {
   sessions: [...SESSIONS],
   speakers: [...SPEAKERS],
