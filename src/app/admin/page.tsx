@@ -8,6 +8,8 @@ import {
   BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer,
   LineChart, Line, PieChart, Pie, Cell, CartesianGrid
 } from 'recharts';
+import { useGetList, useCreate, useUpdate, useDelete } from 'ra-core';
+import ReactAdminProvider from '@/components/ReactAdminProvider';
 import {
   Users, MessageSquare, Zap, BarChart2, Settings, Star,
   ArrowUpRight, ArrowDownRight, Plus, Pencil, Trash2, Search,
@@ -159,18 +161,28 @@ const emptySpeakerForm = {
 
 // ─── Main Component ──────────────────────────────────────────────
 
-export default function AdminDashboardPage() {
+function AdminDashboardContent() {
   const [activeView, setActiveView] = useState<'overview' | 'sessions' | 'speakers' | 'questions'>('overview');
 
   // ── Sessions State ──
-  const [sessions, setSessions] = useState<Session[]>(SESSIONS);
+  const { data: fetchedSessions, refetch: refetchSessions } = useGetList('sessions', { pagination: { page: 1, perPage: 1000 } });
+  const sessions = (fetchedSessions || SESSIONS) as Session[];
+  const [createSession] = useCreate();
+  const [updateSession] = useUpdate();
+  const [deleteSessionMutation] = useDelete();
+
   const [sessionModalOpen, setSessionModalOpen] = useState(false);
   const [editingSession, setEditingSession] = useState<Session | null>(null);
   const [sessionForm, setSessionForm] = useState(emptySessionForm);
   const [deleteSessionConfirm, setDeleteSessionConfirm] = useState<Session | null>(null);
 
   // ── Speakers State ──
-  const [speakers, setSpeakers] = useState<Speaker[]>(SPEAKERS);
+  const { data: fetchedSpeakers, refetch: refetchSpeakers } = useGetList('speakers', { pagination: { page: 1, perPage: 1000 } });
+  const speakers = (fetchedSpeakers || SPEAKERS) as Speaker[];
+  const [createSpeaker] = useCreate();
+  const [updateSpeaker] = useUpdate();
+  const [deleteSpeakerMutation] = useDelete();
+
   const [speakerModalOpen, setSpeakerModalOpen] = useState(false);
   const [editingSpeaker, setEditingSpeaker] = useState<Speaker | null>(null);
   const [speakerForm, setSpeakerForm] = useState(emptySpeakerForm);
@@ -231,49 +243,59 @@ export default function AdminDashboardPage() {
     const tags = sessionForm.tags.split(',').map(t => t.trim()).filter(Boolean);
 
     if (editingSession) {
-      setSessions(prev =>
-        prev.map(s =>
-          s.id === editingSession.id
-            ? {
-                ...s,
-                title: sessionForm.title,
-                description: sessionForm.description,
-                startTime: sessionForm.startTime + ':00',
-                endTime: sessionForm.endTime + ':00',
-                room,
-                track: sessionForm.track,
-                capacity: Number(sessionForm.capacity),
-                tags,
-              }
-            : s
-        )
-      );
-      toast.success('Session updated successfully');
+      updateSession('sessions', {
+        id: editingSession.id,
+        data: {
+          ...editingSession,
+          title: sessionForm.title,
+          description: sessionForm.description,
+          startTime: sessionForm.startTime + ':00',
+          endTime: sessionForm.endTime + ':00',
+          room,
+          track: sessionForm.track,
+          capacity: Number(sessionForm.capacity),
+          tags,
+        },
+        previousData: editingSession
+      }, {
+        onSuccess: () => {
+          toast.success('Session updated successfully');
+          refetchSessions();
+        }
+      });
     } else {
-      const newSession: Session = {
-        id: `sess-${Date.now()}`,
-        eventId: 'evt-001',
-        title: sessionForm.title,
-        description: sessionForm.description,
-        startTime: sessionForm.startTime + ':00',
-        endTime: sessionForm.endTime + ':00',
-        room,
-        track: sessionForm.track,
-        capacity: Number(sessionForm.capacity),
-        speakers: [],
-        questions: [],
-        tags,
-      };
-      setSessions(prev => [...prev, newSession]);
-      toast.success('Session added successfully');
+      createSession('sessions', {
+        data: {
+          title: sessionForm.title,
+          description: sessionForm.description,
+          startTime: sessionForm.startTime + ':00',
+          endTime: sessionForm.endTime + ':00',
+          room,
+          track: sessionForm.track,
+          capacity: Number(sessionForm.capacity),
+          speakers: [],
+          questions: [],
+          tags,
+          eventId: 'evt-001',
+        }
+      }, {
+        onSuccess: () => {
+          toast.success('Session added successfully');
+          refetchSessions();
+        }
+      });
     }
     setSessionModalOpen(false);
   }
 
   function deleteSession(session: Session) {
-    setSessions(prev => prev.filter(s => s.id !== session.id));
-    setAllQuestions(prev => prev.filter(q => q.sessionId !== session.id));
-    toast.success('Session deleted successfully');
+    deleteSessionMutation('sessions', { id: session.id, previousData: session }, {
+      onSuccess: () => {
+        toast.success('Session deleted successfully');
+        refetchSessions();
+        setAllQuestions(prev => prev.filter(q => q.sessionId !== session.id));
+      }
+    });
   }
 
   // ── Speaker Helpers ──
@@ -301,49 +323,59 @@ export default function AdminDashboardPage() {
 
   function saveSpeaker() {
     if (editingSpeaker) {
-      setSpeakers(prev =>
-        prev.map(s =>
-          s.id === editingSpeaker.id
-            ? {
-                ...s,
-                name: speakerForm.name,
-                photo: speakerForm.photo,
-                bio: speakerForm.bio,
-                title: speakerForm.title,
-                company: speakerForm.company,
-                twitter: speakerForm.twitter || undefined,
-                linkedin: speakerForm.linkedin || undefined,
-                website: speakerForm.website || undefined,
-                github: speakerForm.github || undefined,
-              }
-            : s
-        )
-      );
-      toast.success('Speaker updated successfully');
+      updateSpeaker('speakers', {
+        id: editingSpeaker.id,
+        data: {
+          ...editingSpeaker,
+          name: speakerForm.name,
+          photo: speakerForm.photo,
+          bio: speakerForm.bio,
+          title: speakerForm.title,
+          company: speakerForm.company,
+          twitter: speakerForm.twitter || undefined,
+          linkedin: speakerForm.linkedin || undefined,
+          website: speakerForm.website || undefined,
+          github: speakerForm.github || undefined,
+        },
+        previousData: editingSpeaker
+      }, {
+        onSuccess: () => {
+          toast.success('Speaker updated successfully');
+          refetchSpeakers();
+        }
+      });
     } else {
-      const newSpeaker: Speaker = {
-        id: `spk-${Date.now()}`,
-        name: speakerForm.name,
-        photo: speakerForm.photo,
-        bio: speakerForm.bio,
-        title: speakerForm.title,
-        company: speakerForm.company,
-        twitter: speakerForm.twitter || undefined,
-        linkedin: speakerForm.linkedin || undefined,
-        website: speakerForm.website || undefined,
-        github: speakerForm.github || undefined,
-        sessions: [],
-        tags: [],
-      };
-      setSpeakers(prev => [...prev, newSpeaker]);
-      toast.success('Speaker added successfully');
+      createSpeaker('speakers', {
+        data: {
+          name: speakerForm.name,
+          photo: speakerForm.photo,
+          bio: speakerForm.bio,
+          title: speakerForm.title,
+          company: speakerForm.company,
+          twitter: speakerForm.twitter || undefined,
+          linkedin: speakerForm.linkedin || undefined,
+          website: speakerForm.website || undefined,
+          github: speakerForm.github || undefined,
+          sessions: [],
+          tags: [],
+        }
+      }, {
+        onSuccess: () => {
+          toast.success('Speaker added successfully');
+          refetchSpeakers();
+        }
+      });
     }
     setSpeakerModalOpen(false);
   }
 
   function deleteSpeaker(speaker: Speaker) {
-    setSpeakers(prev => prev.filter(s => s.id !== speaker.id));
-    toast.success('Speaker deleted successfully');
+    deleteSpeakerMutation('speakers', { id: speaker.id, previousData: speaker }, {
+      onSuccess: () => {
+        toast.success('Speaker deleted successfully');
+        refetchSpeakers();
+      }
+    });
   }
 
   // ── Question Helpers ──
@@ -1129,5 +1161,13 @@ export default function AdminDashboardPage() {
       </div>
       <MobileNav activeRoute="/admin" />
     </AppLayout>
+  );
+}
+
+export default function AdminDashboardPage() {
+  return (
+    <ReactAdminProvider>
+      <AdminDashboardContent />
+    </ReactAdminProvider>
   );
 }
