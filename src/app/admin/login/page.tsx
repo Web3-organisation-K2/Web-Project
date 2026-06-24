@@ -26,9 +26,13 @@ export default function AdminLoginPage() {
     }
 
     try {
+      
       await authProvider.login({ username: formData.email, password: formData.password });
+
+      
       router.push('/admin');
     } catch (err: any) {
+     
       setError(err?.message || 'Connexion admin impossible.');
     } finally {
       setIsLoading(false);
@@ -43,6 +47,7 @@ export default function AdminLoginPage() {
       </div>
 
       <div className="w-full max-w-md relative z-10">
+        {/* En-tête : logo + titre */}
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex items-center gap-3 mb-6">
             <AppLogo size={48} />
@@ -61,6 +66,7 @@ export default function AdminLoginPage() {
           <p className="text-dark-300">Connectez-vous pour gérer la plateforme.</p>
         </div>
 
+        {/* Carte du formulaire */}
         <div className="bg-dark-900/80 backdrop-blur-xl border border-dark-700 rounded-2xl p-8">
           {error && (
             <div className="mb-6 p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 text-sm">
@@ -69,6 +75,7 @@ export default function AdminLoginPage() {
           )}
 
           <form onSubmit={handleSubmit} className="space-y-6">
+            {/* Champ email */}
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-dark-200 mb-2">
                 Adresse email admin
@@ -86,6 +93,7 @@ export default function AdminLoginPage() {
               </div>
             </div>
 
+            {/* Champ mot de passe (avec bouton "afficher/masquer") */}
             <div>
               <label htmlFor="password" className="block text-sm font-medium text-dark-200 mb-2">
                 Mot de passe
@@ -110,6 +118,7 @@ export default function AdminLoginPage() {
               </div>
             </div>
 
+            {/* Bouton de soumission */}
             <button
               type="submit"
               disabled={isLoading}
