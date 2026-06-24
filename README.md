@@ -32,6 +32,7 @@ EventHub est une application fullstack permettant de gérer des événements, de
 | Couche | Technologie | Version |
 |---|---|---|
 | **Framework** | Next.js | `^16.2.4` |
+| **Administration** | React-Admin (Headless) | `^5.14.7` |
 | **Langage** | TypeScript | `^5` |
 | **Runtime** | Bun | `^1.3.4` |
 | **Base de données** | PostgreSQL | — |
