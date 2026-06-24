@@ -6,8 +6,9 @@ import { useRouter } from 'next/navigation';
 import { Eye, EyeOff, Mail, Lock, ArrowRight } from 'lucide-react';
 import AppLogo from '@/components/ui/AppLogo';
 import { authProvider } from '@/lib/ra-providers';
+import ReactAdminProvider from '@/components/ReactAdminProvider';
 
-export default function LoginPage() {
+function LoginContent() {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -172,5 +173,13 @@ export default function LoginPage() {
         </p>
       </div>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <ReactAdminProvider>
+      <LoginContent />
+    </ReactAdminProvider>
   );
 }

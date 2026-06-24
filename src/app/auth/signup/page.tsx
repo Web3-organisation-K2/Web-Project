@@ -5,9 +5,12 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Eye, EyeOff, Mail, Lock, User, ArrowRight, Check } from 'lucide-react';
 import AppLogo from '@/components/ui/AppLogo';
+import { useNotify } from 'ra-core';
+import ReactAdminProvider from '@/components/ReactAdminProvider';
 
-export default function SignupPage() {
+function SignupContent() {
   const router = useRouter();
+  const notify = useNotify();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -74,14 +77,21 @@ export default function SignupPage() {
       const data = await response.json();
 
       if (!response.ok) {
-        setError(data.message || "Erreur lors de l'inscription");
+        let errorMessage = data.message || "Erreur lors de l'inscription";
+        if (response.status === 409) {
+          errorMessage = "Ce compte existe déjà. Veuillez vous connecter.";
+        }
+        setError(errorMessage);
+        notify(errorMessage, { type: 'warning' });
         setIsLoading(false);
         return;
       }
 
+      notify("Compte créé avec succès !", { type: 'info' });
       router.push('/auth/login?registered=true');
     } catch {
       setError('Erreur réseau. Veuillez réessayer.');
+      notify('Erreur réseau. Veuillez réessayer.', { type: 'warning' });
       setIsLoading(false);
     }
   };
@@ -256,5 +266,13 @@ export default function SignupPage() {
         </p>
       </div>
     </div>
+  );
+}
+
+export default function SignupPage() {
+  return (
+    <ReactAdminProvider>
+      <SignupContent />
+    </ReactAdminProvider>
   );
 }
