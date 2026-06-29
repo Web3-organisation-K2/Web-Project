@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import AppLayout from '@/components/AppLayout';
 import MobileNav from '@/components/MobileNav';
 import Link from 'next/link';
@@ -45,7 +45,7 @@ const SETTING_SECTIONS = [
 export default function SettingsPage() {
   const [activeSection, setActiveSection] = useState('general');
   const [saved, setSaved] = useState(false);
-  const [accentTheme, setAccentTheme] = useState<AccentTheme>('green');
+  const [accentTheme, setAccentTheme] = useState<AccentTheme>(getStoredAccentTheme);
 
   const [generalToggles, setGeneralToggles] = useState<SettingToggle[]>([
     { id: 'public_profile', label: 'Public Profile', desc: 'Allow others to see your profile', enabled: true },
@@ -60,10 +60,6 @@ export default function SettingsPage() {
     { id: 'auto_live', label: 'Auto Live Detection', desc: 'Automatically mark sessions as live based on schedule', enabled: true },
     { id: 'export_data', label: 'Data Export', desc: 'Allow exporting event data as CSV/JSON', enabled: false },
   ]);
-
-  useEffect(() => {
-    setAccentTheme(getStoredAccentTheme());
-  }, []);
 
   const toggleGeneral = (id: string) => {
     setGeneralToggles(prev => prev.map(t => t.id === id ? { ...t, enabled: !t.enabled } : t));
