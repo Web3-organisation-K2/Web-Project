@@ -8,7 +8,7 @@ interface AppLayoutProps {
 
 export default function AppLayout({ children, activeRoute }: AppLayoutProps) {
   return (
-    <div className="flex min-h-screen bg-[#0D0D0D]">
+    <div className="flex min-h-screen bg-transparent">
       <Sidebar activeRoute={activeRoute} />
       <main className="flex-1 min-w-0 overflow-x-hidden">
         {children}

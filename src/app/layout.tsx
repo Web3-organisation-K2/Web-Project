@@ -2,6 +2,7 @@ import React from 'react';
 import type { Metadata, Viewport } from 'next';
 import '@/styles/tailwind.css';
 import { Toaster } from 'sonner';
+import ThemeController from '@/components/ThemeController';
 
 export const viewport: Viewport = {
   width: 'device-width',
@@ -20,8 +21,9 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en">
+    <html lang="en" data-accent-theme="green">
       <body>
+        <ThemeController />
         {children}
         <Toaster
           position="bottom-right"

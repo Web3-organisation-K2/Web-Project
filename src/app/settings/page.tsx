@@ -1,9 +1,10 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import AppLayout from '@/components/AppLayout';
 import MobileNav from '@/components/MobileNav';
 import Link from 'next/link';
 import { Settings, User, Bell, Shield, Palette, ChevronRight, Save, ArrowLeft } from 'lucide-react';
+import { ACCENT_THEMES, AccentTheme, getStoredAccentTheme, persistAccentTheme } from '@/lib/theme';
 
 
 
@@ -44,6 +45,7 @@ const SETTING_SECTIONS = [
 export default function SettingsPage() {
   const [activeSection, setActiveSection] = useState('general');
   const [saved, setSaved] = useState(false);
+  const [accentTheme, setAccentTheme] = useState<AccentTheme>('green');
 
   const [generalToggles, setGeneralToggles] = useState<SettingToggle[]>([
     { id: 'public_profile', label: 'Public Profile', desc: 'Allow others to see your profile', enabled: true },
@@ -59,6 +61,10 @@ export default function SettingsPage() {
     { id: 'export_data', label: 'Data Export', desc: 'Allow exporting event data as CSV/JSON', enabled: false },
   ]);
 
+  useEffect(() => {
+    setAccentTheme(getStoredAccentTheme());
+  }, []);
+
   const toggleGeneral = (id: string) => {
     setGeneralToggles(prev => prev.map(t => t.id === id ? { ...t, enabled: !t.enabled } : t));
     setSaved(false);
@@ -72,6 +78,12 @@ export default function SettingsPage() {
   const handleSave = () => {
     setSaved(true);
     setTimeout(() => setSaved(false), 3000);
+  };
+
+  const handleAccentThemeChange = (theme: AccentTheme) => {
+    setAccentTheme(theme);
+    persistAccentTheme(theme);
+    setSaved(false);
   };
 
   return (
@@ -261,16 +273,25 @@ export default function SettingsPage() {
                   <div>
                     <label className="block text-[#888] text-xs font-medium mb-3">Accent Color</label>
                     <div className="flex gap-3">
-                      {[
-                        { name: 'Neon Green', color: '#A8FF3E' },
-                        { name: 'Orange', color: '#FF6B2B' },
-                        { name: 'Blue', color: '#60A5FA' },
-                        { name: 'Purple', color: '#A78BFA' },
-                      ].map(c => (
-                        <button key={c.name} title={c.name}
-                          className="w-8 h-8 rounded-full ring-2 ring-offset-2 ring-offset-[#111111] ring-transparent hover:ring-white/30 transition-all"
-                          style={{ background: c.color }} />
-                      ))}
+                      {(Object.keys(ACCENT_THEMES) as AccentTheme[]).map((key) => {
+                        const theme = ACCENT_THEMES[key];
+                        return (
+                          <button
+                            key={key}
+                            title={theme.name}
+                            type="button"
+                            aria-label={`Use ${theme.name}`}
+                            aria-pressed={accentTheme === key}
+                            onClick={() => handleAccentThemeChange(key)}
+                            className="w-8 h-8 rounded-full ring-2 ring-offset-2 ring-offset-[#111111] hover:ring-white/30 transition-all"
+                            style={{
+                              background: theme.color,
+                              boxShadow: accentTheme === key ? '0 0 0 2px #FFFFFF' : 'none',
+                              transform: accentTheme === key ? 'scale(1.08)' : 'scale(1)',
+                            }}
+                          />
+                        );
+                      })}
                     </div>
                   </div>
                   <div>
